@@ -4,6 +4,9 @@ local api = vim.api
 local cmd = vim.api.nvim_create_autocmd
 local treesitter = vim.treesitter
 local opts = {
+    tags = {},
+}
+local defaults = {
     tags = {
         {
             name = "TODO",
@@ -32,19 +35,18 @@ local opts = {
             bg = "",
             bold = true,
             virtual_text = "",
-        }
-
+        },
     },
 }
 
 
 M.Setup = function(config)
     if config and config.tags then
-        if config.replace_defaults then
-            opts.tags = config.tags
-        else
-            opts.tags = vim.tbl_deep_extend("force", opts.tags, config.tags or {})
+        if not config.replace_defaults then
+            opts.tags = vim.tbl_deep_extend("force", opts.tags, defaults.tags)
         end
+
+        opts.tags = vim.tbl_deep_extend("force", opts.tags, config.tags or {})
     end
 
     local augroup = vim.api.nvim_create_augroup("better-comments", {clear = true})

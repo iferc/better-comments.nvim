@@ -92,7 +92,7 @@ M.Setup = function(config)
                             local ns_id = vim.api.nvim_create_namespace(hl.name)
                             local v_opts = {
                                 id = id,
-                                virt_text = { { hl.virtual_text, "" } },
+                                virt_text = { { hl.virtual_text or "", "" } },
                                 virt_text_pos = 'overlay',
                                 virt_text_win_col = comment.finish + 2,
                             }

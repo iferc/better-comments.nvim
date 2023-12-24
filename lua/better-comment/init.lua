@@ -88,7 +88,7 @@ M.Setup = function(config)
             for id, comment in ipairs(comments) do
                 for hl_id, hl in ipairs(opts.tags) do
                     if string.find(comment.text, hl.name) then
-                        if hl.virtual_text ~= "" then
+                        if hl.virtual_text and hl.virtual_text ~= "" then
                             local ns_id = vim.api.nvim_create_namespace(hl.name)
                             local v_opts = {
                                 id = id,

@@ -7,46 +7,82 @@ local opts = {
     tags = {},
 }
 local defaults = {
-    tags = {
-        {
-            name = "TODO",
-            fg = "white",
-            bg = "#0a7aca",
-            bold = true,
-            virtual_text = "",
-        },
-        {
-            name = "FIX",
-            fg = "white",
-            bg = "#f44747",
-            bold = true,
-            virtual_text = "",
-        },
-        {
-            name = "WARNING",
-            fg = "#FFA500",
-            bg = "",
-            bold = false,
-            virtual_text = "",
-        },
-        {
-            name = "!",
-            fg = "#f44747",
-            bg = "",
-            bold = true,
-            virtual_text = "",
-        },
+    -- Begins with the word TODO or TO DO in any case.
+    -- Examples:
+    --   TODO, do the thing.
+    --   @todo: thing must be done.
+    --   To Do!
+    todo = {
+        name = "^[^%w]+[Tt][Oo]%s?[Dd][Oo]",
+        fg = "white",
+        bg = "#0a7aca",
+        bold = true,
+        virtual_text = nil,
+    },
+
+    -- Begins with the word WARNING in any case.
+    -- Examples:
+    --   WARNING this next command must be executed.
+    --   warning: other repositories rely on this next behaviour.
+    warning = {
+        name = "^[^%w]+[Ww][Aa][Rr][Nn][Ii][Nn][Gg]",
+        fg = "white",
+        bg = "#ca7a0a",
+        bold = true,
+        virtual_text = nil,
+    },
+
+    -- Begins with ticket IDs in any case, e.g. PRJ-123
+    -- Examples:
+    --   LIFE-42
+    --   API-1337
+    --   lazy-123
+    --   WARNING-555
+    ticket_id = {
+        name = "^[^%w]+%a+%-%d+",
+        fg = "black",
+        bg = "#caba0a",
+        bold = true,
+        virtual_text = nil,
+    },
+
+    -- Begins with exclamation point aka bang "!" to emphasize comment.
+    -- This can be applied on top of earlier rules.
+    -- Examples:
+    --!  Important module notes...
+    --  !BEWARE, there be dragons here.
+    -- ! TODO, do the thing.
+    -- ! WARNING this next command must be executed.
+    -- ! LIFE-42
+    bang = {
+        name = "^[^%w]*!",
+        fg = "#b20917",
+        bg = "",
+        bold = true,
+        virtual_text = nil,
     },
 }
 
 
 M.Setup = function(config)
+    if config and config.highlight_todo != false then
+        table.insert(opts.tags, defaults.todo)
+    end
+
+    if config and config.highlight_warning != false then
+        table.insert(opts.tags, defaults.warning)
+    end
+
+    if config and config.highlight_ticket_id != false then
+        table.insert(opts.tags, defaults.ticket_id)
+    end
+
+    if config and config.highlight_bang != false then
+        table.insert(opts.tags, defaults.bang)
+    end
+
     if config and config.tags then
-        if config.replace_defaults then
-            opts.tags = vim.tbl_deep_extend("force", opts.tags, config.tags or {})
-        else
-            opts.tags = vim.tbl_deep_extend("force", opts.tags, defaults.tags, config.tags or {})
-        end
+        opts.tags = vim.tbl_deep_extend("force", opts.tags, config.tags or {})
     end
 
     local augroup = vim.api.nvim_create_augroup("better-comments", {clear = true})

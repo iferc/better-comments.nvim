@@ -42,11 +42,11 @@ local defaults = {
 
 M.Setup = function(config)
     if config and config.tags then
-        if not config.replace_defaults then
-            opts.tags = vim.tbl_deep_extend("force", opts.tags, defaults.tags)
+        if config.replace_defaults then
+            opts.tags = vim.tbl_deep_extend("force", opts.tags, config.tags or {})
+        else
+            opts.tags = vim.tbl_deep_extend("force", opts.tags, defaults.tags, config.tags or {})
         end
-
-        opts.tags = vim.tbl_deep_extend("force", opts.tags, config.tags or {})
     end
 
     local augroup = vim.api.nvim_create_augroup("better-comments", {clear = true})

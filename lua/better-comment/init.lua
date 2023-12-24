@@ -64,7 +64,7 @@ local defaults = {
 }
 
 
-M.Setup = function(config)
+M.setup = function(config)
     if config and config.highlight_todo ~= false then
         table.insert(opts.tags, defaults.todo)
     end

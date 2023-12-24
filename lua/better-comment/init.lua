@@ -65,19 +65,19 @@ local defaults = {
 
 
 M.Setup = function(config)
-    if config and config.highlight_todo != false then
+    if config and config.highlight_todo ~= false then
         table.insert(opts.tags, defaults.todo)
     end
 
-    if config and config.highlight_warning != false then
+    if config and config.highlight_warning ~= false then
         table.insert(opts.tags, defaults.warning)
     end
 
-    if config and config.highlight_ticket_id != false then
+    if config and config.highlight_ticket_id ~= false then
         table.insert(opts.tags, defaults.ticket_id)
     end
 
-    if config and config.highlight_bang != false then
+    if config and config.highlight_bang ~= false then
         table.insert(opts.tags, defaults.bang)
     end
 

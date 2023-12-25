@@ -1,88 +1,79 @@
 # Better Comments - NVIM
-Better comments helps you to organize your comments with highlights and virtual text.
 
-# DEMO
-![Demo](https://github.com/Djancyp/nvim-plugin-demo/blob/main/better-comment.nvim/images/example.png)
-## Installation
-### Requirement
-in order to use this plugin you need to set up treesiter
+Better comments adds pattern-based comment highlighting so that important comments are hard to miss.
 
-[nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)
+## Prerequisites
 
-Recommended Packer:
+- Treesiter ([nvim-treesitter/nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter)) is required.
+
+## Installation via [Lazy](https://github.com/folke/lazy.nvim)
 
 ```lua
-use "Djancyp/better-comments.nvim"
-```
-### Setup
-```lua
-require('better-comment').Setup()
-```
+require("lazy").setup({
+    {
+        'iferc/better-comments.nvim',
+        dependencies = { { 'nvim-treesitter/nvim-treesitter' } },
+        config = function()
+            require('better-comments').setup({
+                -- Begins with the word TODO or TO DO in any case.
+                -- Examples:
+                --   TODO, do the thing.
+                --   @todo: thing must be done.
+                --   To Do!
+                -- Defaults to `true`.
+                highlight_todo = true
 
-## Configs
-### Default Config
-```lua
-tags = {
-        {
-            name = "TODO",
-            fg = "white",
-            bg = "#0a7aca",
-            bold = true,
-            virtual_text = "",
-        },
-        {
-            name = "FIX",
-            fg = "white",
-            bg = "#f44747",
-            bold = true,
-            virtual_text = "This is virtual Text from FIX",
-        },
-        {
-            name = "WARNING",
-            fg = "#FFA500",
-            bg = "",
-            bold = false,
-            virtual_text = "This is virtual Text from WARNING",
-        },
-        {
-            name = "!",
-            fg = "#f44747",
-            bg = "",
-            bold = true,
-            virtual_text = "",
-        }
+                -- Begins with the word WARNING in any case.
+                -- Examples:
+                --   WARNING this next command must be executed.
+                --   warning: other repositories rely on this next behaviour.
+                -- Defaults to `true`.
+                highlight_warning = true
 
-    }
-```
-### Overwrite defaults or add new Config
-```lua
-require('better-comment').Setup({
-tags = {
-       // TODO will overwrite
-        {
-            name = "TODO",
-            fg = "white",
-            bg = "#0a7aca",
-            bold = true,
-            virtual_text = "",
-        },
-       {
-            name = "NEW",
-            fg = "white",
-            bg = "red",
-            bold = false,
-            virtual_text = "",
-        },
+                -- Begins with ticket IDs in any case, e.g. PRJ-123
+                -- Examples:
+                --   LIFE-42
+                --   API-1337
+                --   lazy-123
+                --   WARNING-555
+                -- Defaults to `true`.
+                highlight_ticket_id = true
 
-    }
+                -- Begins with exclamation point aka bang "!" to emphasize comment.
+                -- This can be applied on top of earlier rules.
+                -- Examples:
+                --!  Important module notes...
+                --  !BEWARE, there be dragons here.
+                -- ! TODO, do the thing.
+                --!  WARNING this next command must be executed.
+                --  !LIFE-42
+                -- Defaults to `true`.
+                highlight_bang = true
+
+                -- Custom patterns. Each pattern is applied in order
+                -- and multiple patterns may compose together.
+                -- Defaults to `empty table`.
+                tags = {
+                    {
+                        pattern = "FIX",
+                        fg = "white",
+                        bg = "#f44747",
+                        bold = true,
+                        virtual_text = "This is virtual Text from FIX",
+                    },
+                }
+            })
+        end,
+    },
 })
 ```
 
+## Future plans
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
+- Virtual text using a closure given file, line, cols, and text.
+- Pulling ticket status in a virtual text section of a ticket id comment.
+- Research whether or not there is a way to tie colors to colorschemes/themes.
 
 ## License
+
 [MIT](https://choosealicense.com/licenses/mit/)

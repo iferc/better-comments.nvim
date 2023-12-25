@@ -13,7 +13,7 @@ local defaults = {
     --   @todo: thing must be done.
     --   To Do!
     todo = {
-        name = "^[^%w]+[Tt][Oo]%s?[Dd][Oo]",
+        pattern = "^[^%w]+[Tt][Oo]%s?[Dd][Oo]",
         fg = "white",
         bg = "#0a7aca",
         bold = true,
@@ -25,7 +25,7 @@ local defaults = {
     --   WARNING this next command must be executed.
     --   warning: other repositories rely on this next behaviour.
     warning = {
-        name = "^[^%w]+[Ww][Aa][Rr][Nn][Ii][Nn][Gg]",
+        pattern = "^[^%w]+[Ww][Aa][Rr][Nn][Ii][Nn][Gg]",
         fg = "white",
         bg = "#ca7a0a",
         bold = true,
@@ -39,7 +39,7 @@ local defaults = {
     --   lazy-123
     --   WARNING-555
     ticket_id = {
-        name = "^[^%w]+%a+%-%d+",
+        pattern = "^[^%w]+%a+%-%d+",
         fg = "black",
         bg = "#caba0a",
         bold = true,
@@ -55,7 +55,7 @@ local defaults = {
     -- ! WARNING this next command must be executed.
     -- ! LIFE-42
     bang = {
-        name = "^[^%w]*!",
+        pattern = "^[^%w]*!",
         fg = "#b20917",
         bg = "",
         bold = true,
@@ -123,9 +123,9 @@ M.setup = function(config)
 
             for id, comment in ipairs(comments) do
                 for hl_id, hl in ipairs(opts.tags) do
-                    if string.find(comment.text, hl.name) then
+                    if string.find(comment.text, hl.pattern) then
                         if hl.virtual_text and hl.virtual_text ~= "" then
-                            local ns_id = vim.api.nvim_create_namespace(hl.name)
+                            local ns_id = vim.api.nvim_create_namespace(hl.pattern)
                             local v_opts = {
                                 id = id,
                                 virt_text = { { hl.virtual_text or "", "" } },
